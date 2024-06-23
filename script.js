@@ -1,27 +1,43 @@
+document.getElementById('addTaskButton').addEventListener('click', addTask);
+
 function addTask() {
-    let taskInput = document.getElementById('taskInput');
-    let taskList = document.getElementById('taskList');
-    
+    const taskInput = document.getElementById('taskInput');
+    const categoryInput = document.getElementById('categoryInput');
+    const dueDateInput = document.getElementById('dueDateInput');
+
     if (taskInput.value.trim() === '') {
-        alert('Please enter a task.');
+        alert('Please enter a task');
         return;
     }
-    
-    let li = document.createElement('li');
-    li.textContent = taskInput.value;
 
-    let deleteButton = document.createElement('button');
-    deleteButton.textContent = '×';
-    deleteButton.onclick = function() {
-        taskList.removeChild(li);
-    };
+    const taskList = document.getElementById('taskList');
 
-    li.appendChild(deleteButton);
-    
-    li.onclick = function() {
-        li.classList.toggle('completed');
-    };
+    const li = document.createElement('li');
+    li.innerHTML = `
+        <span class="task-text">${taskInput.value}</span>
+        <span class="category">[${categoryInput.value}]</span>
+        <span class="due-date">${dueDateInput.value}</span>
+        <div class="task-actions">
+            <button class="complete-task">✔️</button>
+            <button class="delete-task">❌</button>
+            <button class="priority-task">🔺</button>
+        </div>
+    `;
 
     taskList.appendChild(li);
+
     taskInput.value = '';
+    dueDateInput.value = '';
+
+    li.querySelector('.complete-task').addEventListener('click', () => {
+        li.classList.toggle('completed');
+    });
+
+    li.querySelector('.delete-task').addEventListener('click', () => {
+        taskList.removeChild(li);
+    });
+
+    li.querySelector('.priority-task').addEventListener('click', () => {
+        li.classList.toggle('priority');
+    });
 }
